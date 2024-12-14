@@ -1,0 +1,124 @@
+.profile {
+  max-width: 882px;
+  margin: 40px auto 50px;
+  display: flex;
+  column-gap: 30px;
+  align-items: center;
+  font-family: "Inter";
+  /*position: relative;*/
+}
+.profile__avatar {
+  box-sizing: content-box;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile__avatar:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+.profile__image-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.profile__info {
+  width: 414px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+.profile__info-name {
+  display: flex;
+  align-items: baseline;
+  column-gap: 17px;
+}
+.profile__name {
+  margin: 0;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 56px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.profile__info-aboutme {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.profile__edit-button {
+  width: 24px;
+  height: 24px;
+}
+.profile__edit-button:hover {
+  cursor: pointer;
+  background: #ffffff99;
+}
+.profile__add-button {
+  width: 150px;
+  height: 50px;
+  margin-left: auto;
+}
+.profile__add-button:hover {
+  cursor: pointer;
+  background: #ffffff99;
+}
+.profile__avatar-container {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+.profile__avatar-container:hover {
+  opacity: 1;
+}
+@media screen and (min-width: 800px) and (max-width: 960px) {
+  .profile {
+    width: 90%;
+  }
+  .profile__name {
+    font-weight: 500;
+    font-size: 40px;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 799px) {
+  .profile {
+    display: block;
+    text-align: center;
+    width: 280px;
+  }
+  .profile__info {
+    margin: 0 auto 36px;
+    width: 280px;
+    row-gap: 14px;
+    display: inherit;
+  }
+  .profile__info-name {
+    margin: 0 auto;
+    column-gap: 12px;
+    display: flex;
+    justify-content: center;
+  }
+  .profile__avatar {
+    margin: 0 auto 14px;
+  }
+  .profile__name {
+    font-size: 22px;
+  }
+  .profile__info-aboutme {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}

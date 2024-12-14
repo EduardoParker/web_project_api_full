@@ -1,0 +1,17 @@
+.elements {
+  min-height: 50vh;
+  max-width: 882px;
+  margin: 0 auto 67px;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 18px;
+  row-gap: 21px;
+  justify-content: center;
+  font-family: "Inter";
+}
+@media screen and (min-width: 320px) and (max-width: 779px) {
+  .elements {
+    width: 100%;
+    row-gap: 20px;
+  }
+}

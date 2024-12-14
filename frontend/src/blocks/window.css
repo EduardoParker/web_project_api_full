@@ -1,0 +1,15 @@
+.window {
+  max-width: 358px;
+  background-color: none;
+  color: white;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 60px;
+  padding-bottom: 80px;
+}
+.window__text {
+  margin: 0;
+  font-size: 14px;
+  text-decoration: none;
+  color: white;
+}
