@@ -29,6 +29,14 @@ app.use(requestLogger);
 app.use(cors());
 app.options("*", cors());
 
+const allowedCords = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://master-in-heaven.mooo.com",
+  "https://www.master-in-heaven.mooo.com",
+];
+app.use(cors({ origin: allowedCords }));
+
 app.post(
   "/signin",
   celebrate({
