@@ -73,11 +73,11 @@ export default function Main({
         />
       </section>
       <section className="elements">
-        {cards.map((card) => {
+        {cards.map((data) => {
           return (
             <Cards
-              card={card}
-              key={card._id}
+              card={data}
+              key={data._id}
               onCardClick={onCardClick}
               selectedCard={selectedCard}
               onCardLike={onCardLike}

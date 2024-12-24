@@ -1,33 +1,32 @@
 const { default: mongoose } = require("mongoose");
 const User = require("../models/user");
 const path = require("path");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const user = require("../models/user");
+const NotFoundError = require("../errors/not-found-err");
+require("dotenv").config();
 
 module.exports.getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch((err) => res.status(500).send({ message: "Error" }));
+    .catch((err) => res.status(500).send({ message: "user not found" }));
 };
 
-module.exports.getUserMe = (req, res) => {
-  User.findByI((req.user._id = user._id))
-    .orFail()
-    .then((user) => res.send({ data: user }))
-    .catch((e) =>
-      res
-        .status(400)
-        .send({ message: "Los datos son incorrectos, por favor revisalos" })
-    );
-};
+module.exports.getUserMe = async (req, res, next) => {
+  try {
+    const { user } = req;
+    const id = user._id;
+    const data = await User.findById(id);
+    if (!data) {
+      const validatorError = new validatorError("User not found");
+      return next(validatorError);
+    }
 
-/*app.use((req, res, next) => {
-  req.user = {
-    _id: "6724443783fd1d7cb1a5c394",
-  };
-  next();
-});*/
+    return res.status(201).send(data);
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports.getUser = (req, res) => {
   User.findById(req.params.id)
@@ -49,21 +48,10 @@ module.exports.createUser = (req, res) => {
       password: hash,
     })
       .then((user) => res.send(user))
-      .catch((err) => res.status(400).send(err))
+      .catch((err) =>
+        res.status(400).send({ message: "alguno de los datos es incorrecto" })
+      )
   );
-  /*
-  User.create({ name, about, avatar, email, password:hash })
-    .then((user) =>
-      res.send({
-        status: true,
-        user,
-      })
-    )
-    .catch((err) =>
-      res
-        .status(400)
-        .send({ message: "Los datos son incorrectos, por favor revisalos" })
-    );*/
 };
 
 module.exports.updateUser = (req, res) => {
@@ -106,12 +94,14 @@ module.exports.login = (req, res) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jkt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "7d",
       });
       res.send({ token });
     })
     .catch((err) => {
-      res.status(400).send({ message: err.message });
+      res
+        .status(401)
+        .send({ message: "Los datos son incorrectos, por favor revisalos" });
     });
 };

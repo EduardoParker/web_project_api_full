@@ -4,10 +4,19 @@ class Api {
     this.headers = headers;
   }
 
+  getHeaders() {
+    const headers = this.headers;
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
   getInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
       method: "GET",
-      headers: this.headers,
+      headers: this.getHeaders(),
     })
       .then((res) => {
         if (res.ok) {
@@ -23,7 +32,7 @@ class Api {
   getInitialCards() {
     return fetch(`${this.baseUrl}/cards`, {
       method: "GET",
-      headers: this.headers,
+      headers: this.getHeaders(),
     })
       .then((res) => {
         if (res.ok) {
@@ -38,7 +47,7 @@ class Api {
   updateProfile({ name, about }) {
     return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this.headers,
+      headers: this.getHeaders(),
       body: JSON.stringify({
         name,
         about,
@@ -57,7 +66,7 @@ class Api {
   addNewCard({ name, link }) {
     return fetch(`${this.baseUrl}/cards`, {
       method: "POST",
-      headers: this.headers,
+      headers: this.getHeaders(),
       body: JSON.stringify({
         name,
         link,
@@ -76,7 +85,7 @@ class Api {
   deleteCard(cardId) {
     return fetch(`${this.baseUrl}/cards/${cardId}`, {
       method: "DELETE",
-      headers: this.headers,
+      headers: this.getHeaders(),
     })
       .then((res) => {
         if (res.ok) {
@@ -91,7 +100,7 @@ class Api {
   deleteCardLike(cardId) {
     return fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
       method: "DELETE",
-      headers: this.headers,
+      headers: this.getHeaders(),
     })
       .then((res) => {
         if (res.ok) {
@@ -106,7 +115,7 @@ class Api {
   addCardLike(cardId) {
     return fetch(`${this.baseUrl}/cards/likes/${cardId}`, {
       method: "PUT",
-      headers: this.headers,
+      headers: this.getHeaders(),
     })
       .then((res) => {
         if (res.ok) {
@@ -121,7 +130,7 @@ class Api {
   updateAvatarProfile({ avatar }) {
     return fetch(`${this.baseUrl}/users/me/avatar`, {
       method: "PATCH",
-      headers: this.headers,
+      headers: this.getHeaders(),
       body: JSON.stringify({
         avatar,
       }),
@@ -139,9 +148,10 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: "https://around.nomoreparties.co/v1/web-es-cohort-15",
+  // baseUrl: "https://around.nomoreparties.co/v1/web-es-cohort-15",
+  baseUrl: "http://localhost:3000",
   headers: {
-    authorization: "f96d4519-818e-44b0-ace4-b53f5473f8b0",
+    //  authorization: "f96d4519-818e-44b0-ace4-b53f5473f8b0",
     "Content-Type": "application/json",
   },
 });

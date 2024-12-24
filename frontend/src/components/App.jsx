@@ -58,7 +58,6 @@ function App() {
 
   const onCardClick = (card) => {
     setSelectedCard(card);
-    //console.log(card);
   };
 
   //variable estado para current user
@@ -72,10 +71,17 @@ function App() {
   });
 
   React.useEffect(() => {
-    api.getInfo().then((user) => {
-      setCurrentUser(user);
-    });
-  }, []);
+    if (isLoggedIn) {
+      api
+        .getInfo()
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch((error) => {
+          console.log("Invalid", error);
+        });
+    }
+  }, [isLoggedIn]);
 
   const handleUpdateUser = ({ name, about }) => {
     return api
@@ -102,10 +108,12 @@ function App() {
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api.getInitialCards().then((cards) => {
-      setCards(cards);
-    });
-  }, []);
+    if (isLoggedIn) {
+      api.getInitialCards().then((cards) => {
+        setCards(cards);
+      });
+    }
+  }, [isLoggedIn]);
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
@@ -153,7 +161,6 @@ function App() {
     auth
       .register(email, password)
       .then(() => {
-        //navigate("/signin");
         setIsInfoTooltipOpen(true);
       })
       .catch(() => {
@@ -184,14 +191,14 @@ function App() {
       });
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     const token = getToken();
     if (!token) {
       return;
     }
     auth
       .getUserInfo(token)
-      .then(({ data }) => {
+      .then((data) => {
         setIsLoggedIn(true);
         setUserData({ data });
         navigate("/");

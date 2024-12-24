@@ -8,6 +8,7 @@ const path = require("path");
 const { login, createUser } = require("./controllers/users");
 const { celebrate, Joi, errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+var cors = require("cors");
 
 require("dotenv").config();
 app.use(bodyParser.json());
@@ -24,16 +25,10 @@ const validateURL = (value, helpers) => {
   return helpers.error("string.uri");
 };
 
-/*app.use((req, res, next) => {
-  req.user = {
-    _id: "6724443783fd1d7cb1a5c394",
-  };
-  next();
-});*/
 app.use(requestLogger);
+app.use(cors());
+app.options("*", cors());
 
-app.use(cards);
-app.use(users);
 app.post(
   "/signin",
   celebrate({
@@ -62,6 +57,9 @@ app.post(
   createUser
 );
 
+app.use(cards);
+app.use(users);
+
 app.use((req, res, next) => {
   res.status(404).send({ message: "Recurso solicitado no encontrado" });
   next();
@@ -69,10 +67,12 @@ app.use((req, res, next) => {
 
 app.use(errorLogger);
 
-app.use(errors()); //constrolador de errores del validador
+app.use(errors()); //controlador de errores del validador
 
 app.use((err, req, res, next) => {
-  res.status(500).send({ message: "Se ha producido un error en el servidor" });
+  res.status(err.statusCode || 500).send({
+    message: err.message || "Se ha producido un error en el servidor",
+  });
 });
 
 app.use(express.static(path.join(__dirname, "/")));
