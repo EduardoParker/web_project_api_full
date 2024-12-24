@@ -35,7 +35,26 @@ const allowedCords = [
   "https://master-in-heaven.mooo.com",
   "https://www.master-in-heaven.mooo.com",
 ];
-app.use(cors({ origin: allowedCords }));
+//app.use(cors({ origin: allowedCords }));
+app.use(function (req, res, next) {
+  const { origin } = req.headers;
+  if (allowedCords.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+  const { method } = req;
+  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+  if (method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", DEFAULT_ALLOWED_METHODS);
+  }
+  const requestHeaders = req.headers["access-control-request-headers"];
+  if (method === "OPTIONS") {
+    // permitir solicitudes de dominio cruzado con estos encabezados
+    res.header("Access-Control-Allow-Headers", requestHeaders);
+    // terminar de procesar la solicitud y devolver el resultado al cliente
+    return res.end();
+  }
+  next();
+});
 
 app.post(
   "/signin",
