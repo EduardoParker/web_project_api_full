@@ -56,6 +56,12 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("El servidor va a caer");
+  }, 0);
+});
+
 app.post(
   "/signin",
   celebrate({
