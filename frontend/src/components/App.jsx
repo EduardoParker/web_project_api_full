@@ -12,7 +12,7 @@ import { Outlet, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import Header from "./Header";
-import ProtectedRoute from "./protectedRoute";
+import ProtectedRoute from "./ProtectedRoute";
 import * as auth from "../utils/Auth";
 import { getToken, setToken } from "../utils/token";
 
